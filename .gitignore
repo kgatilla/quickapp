@@ -1,0 +1,13 @@
+# gradle files
+build
+.gradle
+cache
+
+# intellij idea files
+.idea
+*.iml
+gradle-app.setting
+atlassian-ide-plugin.xml
+out
+*.ipr
+*.iws
