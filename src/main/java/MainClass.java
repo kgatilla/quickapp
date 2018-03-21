@@ -9,7 +9,7 @@ public class MainClass {
     }
 
     public static void main(String... args) {
-        spinUpH2DB();
+        //spinUpH2DB();
 
         //while(true){}
     }
