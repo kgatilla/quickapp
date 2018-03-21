@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public interface BankAccount {
 
-    long getAccountId();
+    int getAccountId();
 
     String getBIC();
     String getIBAN();

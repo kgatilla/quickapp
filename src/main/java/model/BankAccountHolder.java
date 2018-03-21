@@ -1,10 +1,9 @@
 package model;
 
-import java.util.Optional;
 
 public interface BankAccountHolder {
 
-    long getClientId();
+    int getClientId();
 
     String getFirstName();
     String getLastName();
