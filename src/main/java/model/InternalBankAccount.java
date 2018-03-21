@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
-public final class InternalBankAccount implements BankAccount {
+public final class InternalBankAccount implements BankAccount, Comparable<BankAccount> {
 
     public static InternalBankAccount of(int accountId, String bic, String iban, String ukSortCode, String ukAccountNumber, CurrencyUnit currency, final Set<BankAccountHolder> owners) {
         return new InternalBankAccount(accountId,bic,iban,ukSortCode,ukAccountNumber,currency, owners);
@@ -73,4 +73,25 @@ public final class InternalBankAccount implements BankAccount {
     private final String UKAccountNumber;
     private final CurrencyUnit currency;
     private final Set<BankAccountHolder> owners;
+
+    @Override
+    public boolean equals(Object other){
+        if (this == other) return true;
+        if (null == other) return false;
+        if (! (other instanceof BankAccount)) return false;
+        if (this.accountId != ((BankAccount) other).getAccountId()) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode(){
+        return accountId;
+    }
+
+
+    @Override
+    public int compareTo(BankAccount that) {
+        return this.getAccountId()- that.getAccountId();
+    }
 }

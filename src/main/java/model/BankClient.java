@@ -1,6 +1,6 @@
 package model;
 
-public final class BankClient implements BankAccountHolder {
+public final class BankClient implements BankAccountHolder, Comparable<BankClient> {
 
     public BankClient( int id, String firstName, String lastName, String email){
         this.id = id;
@@ -49,4 +49,9 @@ public final class BankClient implements BankAccountHolder {
     private final String firstName;
     private final String lastName;
     private final String email;
+
+    @Override
+    public int compareTo(BankClient that) {
+        return this.getClientId() - that.getClientId();
+    }
 }

@@ -1,4 +1,5 @@
 import datastore.H2DBUtilities;
+import service.RESTAccountsService;
 
 public class MainClass {
 
@@ -12,5 +13,9 @@ public class MainClass {
         //spinUpH2DB();
 
         //while(true){}
+
+        RESTAccountsService s = new RESTAccountsService();
+        s.setupClientAccountHolder("James", "Bond","surreal@gmail.com");
+        s.setupNewClientBankAccount(1,"BIC1","IBAN1","010101","01010101","USD");
     }
 }
