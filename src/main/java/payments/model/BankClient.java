@@ -1,4 +1,4 @@
-package model;
+package payments.model;
 
 public final class BankClient implements BankAccountHolder, Comparable<BankClient> {
 
@@ -35,9 +35,7 @@ public final class BankClient implements BankAccountHolder, Comparable<BankClien
         if (other == null) return false;
         if (! (other instanceof BankClient)) return false;
         if (this.id != ((BankClient) other).getClientId()) return false;
-        if (this.email.compareToIgnoreCase(((BankClient) other).getEmail())!=0) return false;
-
-        return true;
+        return this.email.compareToIgnoreCase(((BankClient) other).getEmail()) == 0;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package model;
+package payments.model;
 
 import org.joda.money.Money;
 

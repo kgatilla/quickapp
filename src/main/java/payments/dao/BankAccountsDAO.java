@@ -1,6 +1,6 @@
-package dao;
+package payments.dao;
 
-import model.BankAccount;
+import payments.model.BankAccount;
 
 import java.util.Optional;
 import java.util.Set;

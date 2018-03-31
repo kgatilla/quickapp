@@ -1,11 +1,10 @@
-package dao;
+package payments.dao;
 
-import model.BankAccountHolder;
-import model.BankClient;
+import org.glassfish.jersey.internal.guava.HashBasedTable;
+import payments.model.BankAccountHolder;
+import payments.model.BankClient;
 
-import java.util.Optional;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Database free DAO for Bank Account Holders
@@ -17,7 +16,7 @@ class BankAccountHolderDAONoDB implements BankAccountHolderDAO{
         private static final BankAccountHolderDAONoDB INSTANCE = new BankAccountHolderDAONoDB();
     }
 
-    public static BankAccountHolderDAONoDB getInstance() {
+    static BankAccountHolderDAONoDB getInstance() {
         return Helper.INSTANCE;
     }
 
@@ -48,6 +47,11 @@ class BankAccountHolderDAONoDB implements BankAccountHolderDAO{
     @Override
     public Optional<BankAccountHolder> getClientAccountHolder(int clientId) {
         return Optional.ofNullable(clientsByIdIndex.get(clientId));
+    }
+
+    @Override
+    public Set<Integer> getAllClientAccountHolderIds() {
+        return clientsByIdIndex.keySet();
     }
 
 

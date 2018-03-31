@@ -1,4 +1,4 @@
-package model;
+package payments.model;
 
 import org.joda.money.CurrencyUnit;
 
@@ -79,9 +79,7 @@ public final class InternalBankAccount implements BankAccount, Comparable<BankAc
         if (this == other) return true;
         if (null == other) return false;
         if (! (other instanceof BankAccount)) return false;
-        if (this.accountId != ((BankAccount) other).getAccountId()) return false;
-
-        return true;
+        return this.accountId == ((BankAccount) other).getAccountId();
     }
 
     @Override

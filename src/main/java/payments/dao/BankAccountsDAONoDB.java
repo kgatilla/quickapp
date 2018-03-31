@@ -1,8 +1,8 @@
-package dao;
+package payments.dao;
 
-import model.BankAccount;
-import model.BankAccountHolder;
-import model.InternalBankAccount;
+import payments.model.BankAccount;
+import payments.model.BankAccountHolder;
+import payments.model.InternalBankAccount;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.IllegalCurrencyException;
 
@@ -16,7 +16,7 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
         private static final BankAccountsDAONoDB INSTANCE = new BankAccountsDAONoDB();
     }
 
-    public static BankAccountsDAONoDB getInstance() {
+    static BankAccountsDAONoDB getInstance() {
         return BankAccountsDAONoDB.Helper.INSTANCE;
     }
 

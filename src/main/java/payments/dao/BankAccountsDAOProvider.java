@@ -1,4 +1,4 @@
-package dao;
+package payments.dao;
 
 public class BankAccountsDAOProvider {
 

@@ -1,4 +1,4 @@
-package model;
+package payments.model;
 
 
 public interface BankAccountHolder {
