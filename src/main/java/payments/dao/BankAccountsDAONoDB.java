@@ -11,7 +11,6 @@ import java.util.*;
 public class BankAccountsDAONoDB implements BankAccountsDAO {
 
     //Singleton
-
     private static class Helper{
         private static final BankAccountsDAONoDB INSTANCE = new BankAccountsDAONoDB();
     }
@@ -32,14 +31,13 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
     }
 
     @Override
-    public Optional<Set<BankAccount>> fetchClientBankAccounts(int clientId) {
+    public Optional<HashSet<BankAccount>> fetchClientBankAccounts(int clientId) {
         return Optional.ofNullable(accountsByClientID.get(clientId));
     }
 
-    //
 
-    private final TreeSet<BankAccount> accounts = new TreeSet<>();
-    private final TreeMap<Integer, TreeSet<BankAccount>> accountsByClientID = new TreeMap<>();
+    private final HashSet<BankAccount> accounts = new HashSet<>();
+    private final HashMap<Integer, HashSet<BankAccount>> accountsByClientID = new HashMap<>();
 
 
     private Optional<CurrencyUnit> getCurrencyFromISO(String currencyISOCode) {
@@ -63,13 +61,17 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
     private Optional<BankAccount> synchronizedCreateBankAccount(BankAccountHolder holder, String bic, String iban, String ukSortCode, String ukAccountNumber, CurrencyUnit currency){
         BankAccount account;
         synchronized (accounts) {
-            int newId = accounts.size() +1;
+            int newId = accounts.size() +1; //to do - relace this with a simple counter
             account = InternalBankAccount.of(newId,bic,iban, ukSortCode, ukAccountNumber, currency, holder);
-            if(!accounts.add(account))
+
+            //TODO should use a hashset on IBAN -> O(1)
+            boolean duplicateIban = accounts.stream().anyMatch( x-> x.getIBAN().equalsIgnoreCase(iban));
+
+            if(duplicateIban || !accounts.add(account))
                 account = null;
             else {
                 //update our index
-                TreeSet<BankAccount> clientAccounts = accountsByClientID.computeIfAbsent(holder.getClientId(), k -> new TreeSet<>());
+                HashSet<BankAccount> clientAccounts = accountsByClientID.computeIfAbsent(holder.getClientId(), k -> new HashSet<>());
                 clientAccounts.add(account);
             }
         }

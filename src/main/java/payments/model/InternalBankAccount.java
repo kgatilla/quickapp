@@ -3,10 +3,10 @@ package payments.model;
 import org.joda.money.CurrencyUnit;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
-public final class InternalBankAccount implements BankAccount, Comparable<BankAccount> {
+public final class InternalBankAccount implements BankAccount {
 
     public static InternalBankAccount of(int accountId, String bic, String iban, String ukSortCode, String ukAccountNumber, CurrencyUnit currency, final Set<BankAccountHolder> owners) {
         return new InternalBankAccount(accountId,bic,iban,ukSortCode,ukAccountNumber,currency, owners);
@@ -14,7 +14,7 @@ public final class InternalBankAccount implements BankAccount, Comparable<BankAc
 
 
     public static InternalBankAccount of(int accountId, String bic, String iban, String ukSortCode, String ukAccountNumber, CurrencyUnit currency, BankAccountHolder owner) {
-        TreeSet<BankAccountHolder> owners = new TreeSet<>();
+        HashSet<BankAccountHolder> owners = new HashSet<>();
         owners.add(owner);
         return new InternalBankAccount(accountId,bic,iban,ukSortCode,ukAccountNumber,currency, owners);
     }
@@ -26,7 +26,7 @@ public final class InternalBankAccount implements BankAccount, Comparable<BankAc
         this.UKSortCode = ukSortCode;
         this.UKAccountNumber = ukAccountNumber;
         this.currency = currency;
-        this.owners = new TreeSet<>();
+        this.owners = new HashSet<>();
         this.owners.addAll(owners);
     }
 
@@ -85,11 +85,5 @@ public final class InternalBankAccount implements BankAccount, Comparable<BankAc
     @Override
     public int hashCode(){
         return accountId;
-    }
-
-
-    @Override
-    public int compareTo(BankAccount that) {
-        return this.getAccountId()- that.getAccountId();
     }
 }

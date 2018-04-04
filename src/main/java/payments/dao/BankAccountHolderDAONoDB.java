@@ -1,6 +1,5 @@
 package payments.dao;
 
-import org.glassfish.jersey.internal.guava.HashBasedTable;
 import payments.model.BankAccountHolder;
 import payments.model.BankClient;
 
@@ -21,22 +20,24 @@ class BankAccountHolderDAONoDB implements BankAccountHolderDAO{
     }
 
     //in lieu of a db
-    private final TreeSet<BankAccountHolder> clients = new TreeSet<>();
-    private final TreeMap<Integer, BankAccountHolder> clientsByIdIndex = new TreeMap<>();
+    private final HashMap<String, BankAccountHolder> clients = new HashMap<>();
+    private final HashMap<Integer, BankAccountHolder> clientsByIdIndex = new HashMap<>();
 
     @Override
     public Optional<BankAccountHolder> setupClientAccountHolder(String payeeFirstName, String payeeLastName, String email){
+
         //TODO: check parameters are correct
         BankClient newClient;
 
         synchronized (clients) {
             int id = clients.size() +1;
             newClient = new BankClient(id, payeeFirstName, payeeLastName, email);
-            if (!clients.add(newClient)) {
+            if (clients.containsKey (email)) {
                 //cannot add new client. someone with same id or same email might already exist.
                 newClient = null;
             }
             else {
+                clients.put(email, newClient);
                 clientsByIdIndex.put(id, newClient);
             }
         }
