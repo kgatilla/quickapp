@@ -1,7 +1,4 @@
-import payments.datastore.H2DBUtilities;
 import payments.ServerMain;
-
-import java.io.IOException;
 
 public class MainClass {
 

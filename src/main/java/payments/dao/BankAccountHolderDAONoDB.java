@@ -26,7 +26,6 @@ class BankAccountHolderDAONoDB implements BankAccountHolderDAO{
     @Override
     public Optional<BankAccountHolder> setupClientAccountHolder(String payeeFirstName, String payeeLastName, String email){
 
-        //TODO: check parameters are correct
         BankClient newClient;
 
         synchronized (clients) {

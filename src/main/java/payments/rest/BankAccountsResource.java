@@ -35,7 +35,7 @@ public class BankAccountsResource {
     //ex. http://localhost:8888/payments/api/v1.0/accounts?
     // cliendId=11&bic=FRXXPP&iban=GB12300123&ukSortCode=123456&ukAccountNumber=11223344&currencyISOCode=GBP
     @POST
-    @Produces(MediaType.TEXT_PLAIN) //todo take 3 parameters
+    @Produces(MediaType.TEXT_PLAIN)
     public String createAccountForAccountHolder( @QueryParam("cliendId") int cliendId,
                                                  @QueryParam("bic") String bic,
                                                  @QueryParam("iban") String iban,

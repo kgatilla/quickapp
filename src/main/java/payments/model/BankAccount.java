@@ -18,6 +18,6 @@ public interface BankAccount {
 
     CurrencyUnit getCurrency();
 
-    //Catter for joint accounts
+    // for joint accounts
     Set<BankAccountHolder> getOwners();
 }
