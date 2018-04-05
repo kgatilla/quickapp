@@ -4,9 +4,6 @@ import org.joda.money.CurrencyUnit;
 
 import java.util.Set;
 
-/**
- * Interface to payments.service.model internal or external bank accounts
- */
 public interface BankAccount {
 
     int getAccountId();
