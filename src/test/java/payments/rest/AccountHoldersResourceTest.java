@@ -11,7 +11,7 @@ public class AccountHoldersResourceTest {
         AccountHoldersResource accountHoldersResource = new AccountHoldersResource();
 
         String res = accountHoldersResource.getAllAccountHolders();
-        assertTrue(res, res.contains(ResponseText.RESPONSE_GET_ALL_ACCOUNT_HOLDERS));
+        assertTrue(res, res.contains(RESPONSE_TEXTS.RESPONSE_GET_ALL_ACCOUNT_HOLDERS));
 
         res = accountHoldersResource.createAccountHolder("Mr. John", "Smith", "JohnSmith@gmail.com");
         assertTrue("Account holder Mr. John Smith should be created:" + res, !res.contains("Error"));

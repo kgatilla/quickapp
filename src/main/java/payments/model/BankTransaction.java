@@ -6,12 +6,12 @@ import java.time.LocalDate;
 
 public interface BankTransaction {
 
-    long getTransactionId();
+    int getTransactionId();
 
     BankAccount getPayerAccount();
     BankAccount getPayeeAccount();
 
-    Money getTransferAmmount();
+    Money getTransferAmount();
 
     LocalDate getSetupDate();
     LocalDate getTransactionDate();

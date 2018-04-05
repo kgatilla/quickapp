@@ -21,7 +21,7 @@ public class AccountHoldersResource {
         Set<Integer> ids= dao.getBankAccountHolderDAONoDB().getAllClientAccountHolderIds();
         Set<String> idSet = ids.stream().map(String::valueOf).collect(Collectors.toSet());
         String res  = String.join(",", idSet);
-        return  ResponseText.RESPONSE_GET_ALL_ACCOUNT_HOLDERS + res;
+        return  RESPONSE_TEXTS.RESPONSE_GET_ALL_ACCOUNT_HOLDERS + res;
     }
 
     //ex. http://localhost:8888/payments/api/v1.0/holders/12
@@ -33,7 +33,7 @@ public class AccountHoldersResource {
         Optional<BankAccountHolder> accountHolder = dao.getBankAccountHolderDAONoDB().getClientAccountHolder(id);
         return accountHolder
                 .map(BankAccountHolder::getEmail)
-                .orElse(ResponseText.RESPONSE_ERROR_GET_ACCOUNTS_HOLDER + id);
+                .orElse(RESPONSE_TEXTS.RESPONSE_ERROR_GET_ACCOUNTS_HOLDER + id);
     }
 
 
@@ -49,6 +49,6 @@ public class AccountHoldersResource {
 
         return accountHolder
                 .map(x-> Integer.toString(x.getClientId()))
-                .orElse( ResponseText.RESPONSE_ERROR_CREATE_ACCOUNT_HOLDER);
+                .orElse( RESPONSE_TEXTS.RESPONSE_ERROR_CREATE_ACCOUNT_HOLDER);
     }
 }

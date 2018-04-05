@@ -26,7 +26,7 @@ public class BankAccountsResource {
                              .orElse("");
 
         if (res.length()==0)
-            res = ResponseText.RESPONSE_ERROR_GET_ACCOUNTS_FOR_HOLDER + accountHolderId;
+            res = RESPONSE_TEXTS.RESPONSE_ERROR_GET_ACCOUNTS_FOR_HOLDER + accountHolderId;
 
         return res;
     }
@@ -48,6 +48,6 @@ public class BankAccountsResource {
 
         return newAccount
                 .map(a-> Integer.toString(a.getAccountId()))
-                .orElse(ResponseText.RESPONSE_ERROR_NEW_ACCOUNT_FOR_HOLDER + cliendId);
+                .orElse(RESPONSE_TEXTS.RESPONSE_ERROR_NEW_ACCOUNT_FOR_HOLDER + cliendId);
     }
 }
