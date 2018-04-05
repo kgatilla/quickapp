@@ -1,5 +1,5 @@
-group 'payments'
-version '0.1-SNAPSHOT'
+group = 'payments'
+version = '0.1-SNAPSHOT'
 
 apply plugin: 'java'
 
@@ -14,7 +14,7 @@ dependencies {
     compile group: 'org.joda', name: 'joda-money', version: '0.12'
 
     compile group: 'com.h2database', name: 'h2', version: '1.4.197'
-    compile group: 'org.jooq', name: 'jooq', version: '3.10.5'
+    //compile group: 'org.jooq', name: 'jooq', version: '3.10.5'
 
     compile group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '2.26'
     compile group: 'org.glassfish.jersey', name: 'jersey-bom', version: '2.26'
