@@ -4,6 +4,8 @@ import payments.model.BankAccount;
 import payments.model.BankAccountHolder;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.IllegalCurrencyException;
+import payments.rest.AccountHoldersResource;
+import payments.util.MoneyBuilder;
 
 import java.util.*;
 
@@ -25,7 +27,7 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
     @Override
     public Optional<BankAccount> setupNewClientBankAccount(int cliendId, String bic, String iban, String ukSortCode, String ukAccountNumber, String currencyISOCode) {
 
-        Optional<CurrencyUnit> currency = getCurrencyFromISO(currencyISOCode);
+        Optional<CurrencyUnit> currency = MoneyBuilder.of(currencyISOCode);
 
         return currency.flatMap(client-> getAccountHolderById(cliendId)
                 .flatMap(h -> synchronizedCreateBankAccount(h, bic,iban, ukSortCode, ukAccountNumber, client)));
@@ -36,22 +38,17 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
         return Optional.ofNullable(accountsByClientID.get(clientId));
     }
 
+    @Override
+    public Optional<BankAccount> fetchBankAccountForAccountId(int accountId) {
 
+        return Optional.ofNullable(accountsByAccountId.get(accountId));
+    }
+
+
+    private final HashSet<BankAccount> accounts = new HashSet<>();
+    private final HashMap<Integer, BankAccount> accountsByAccountId = new HashMap<>();
     private final HashMap<String, BankAccount> accountsByIBAN = new HashMap<>();
     private final HashMap<Integer, HashSet<BankAccount>> accountsByClientID = new HashMap<>();
-
-
-    private Optional<CurrencyUnit> getCurrencyFromISO(String currencyISOCode) {
-        CurrencyUnit currencyUnit;
-        try {
-            currencyUnit = CurrencyUnit.of(currencyISOCode);
-        } catch (IllegalCurrencyException ex) {
-            ex.printStackTrace();
-            currencyUnit = null;
-        }
-
-        return Optional.ofNullable(currencyUnit);
-    }
 
     private Optional<BankAccountHolder> getAccountHolderById(int clientId) {
         return new BankAccountHolderDAOProvider()
@@ -61,16 +58,18 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
 
     private Optional<BankAccount> synchronizedCreateBankAccount(BankAccountHolder holder, String bic, String iban, String ukSortCode, String ukAccountNumber, CurrencyUnit currency){
         BankAccount account;
-        synchronized (accountsByIBAN) {
-            int newId = accountsByIBAN.size() +1;
+        synchronized (accounts) {
+            int newId = accounts.size() +1;
             account = BankAccount.of(newId,bic.toUpperCase(),iban.toUpperCase(), ukSortCode.toUpperCase(),
                     ukAccountNumber.toUpperCase(), currency, holder);
 
             if(!accountsByIBAN.containsKey(iban))
             {
+                accounts.add(account);
                 HashSet<BankAccount> clientAccounts = accountsByClientID.computeIfAbsent(holder.getClientId(), k -> new HashSet<>());
                 clientAccounts.add(account);
                 accountsByIBAN.put(account.getIBAN(), account);
+                accountsByAccountId.put(account.getAccountId(), account);
             }
             else
                 account = null;

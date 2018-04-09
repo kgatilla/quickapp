@@ -39,6 +39,18 @@ public class BankTransaction {
     private final BankAccount payerAccount;
     private final BankAccount payeeAccount;
     private final Money transferAmount;
-
     private final LocalDate transactionDate;
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (null == other) return false;
+        if (! (other instanceof BankTransaction)) return false;
+        return this.transactionId == ((BankTransaction) other).getTransactionId();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.transactionId;
+    }
 }
