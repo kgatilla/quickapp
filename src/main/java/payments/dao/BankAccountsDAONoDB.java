@@ -2,7 +2,6 @@ package payments.dao;
 
 import payments.model.BankAccount;
 import payments.model.BankAccountHolder;
-import payments.model.InternalBankAccount;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.IllegalCurrencyException;
 
@@ -26,8 +25,8 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
 
         Optional<CurrencyUnit> currency = getCurrencyFromISO(currencyISOCode);
 
-        return currency.flatMap(c-> getAccountHolderById(cliendId)
-                .flatMap(h -> synchronizedCreateBankAccount(h, bic,iban, ukSortCode, ukAccountNumber, c)));
+        return currency.flatMap(client-> getAccountHolderById(cliendId)
+                .flatMap(h -> synchronizedCreateBankAccount(h, bic,iban, ukSortCode, ukAccountNumber, client)));
     }
 
     @Override
@@ -36,7 +35,7 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
     }
 
 
-    private final HashSet<BankAccount> accounts = new HashSet<>();
+    private final HashMap<String, BankAccount> accountsByIBAN = new HashMap<>();
     private final HashMap<Integer, HashSet<BankAccount>> accountsByClientID = new HashMap<>();
 
 
@@ -60,20 +59,19 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
 
     private Optional<BankAccount> synchronizedCreateBankAccount(BankAccountHolder holder, String bic, String iban, String ukSortCode, String ukAccountNumber, CurrencyUnit currency){
         BankAccount account;
-        synchronized (accounts) {
-            int newId = accounts.size() +1; //to do - relace this with a simple counter
-            account = InternalBankAccount.of(newId,bic,iban, ukSortCode, ukAccountNumber, currency, holder);
+        synchronized (accountsByIBAN) {
+            int newId = accountsByIBAN.size() +1;
+            account = BankAccount.of(newId,bic.toUpperCase(),iban.toUpperCase(), ukSortCode.toUpperCase(),
+                    ukAccountNumber.toUpperCase(), currency, holder);
 
-            //TODO should use a hashset on IBAN -> O(1)
-            boolean duplicateIban = accounts.stream().anyMatch( x-> x.getIBAN().equalsIgnoreCase(iban));
-
-            if(duplicateIban || !accounts.add(account))
-                account = null;
-            else {
-                //update our index
+            if(!accountsByIBAN.containsKey(iban))
+            {
                 HashSet<BankAccount> clientAccounts = accountsByClientID.computeIfAbsent(holder.getClientId(), k -> new HashSet<>());
                 clientAccounts.add(account);
+                accountsByIBAN.put(account.getIBAN(), account);
             }
+            else
+                account = null;
         }
 
         return Optional.ofNullable(account);
