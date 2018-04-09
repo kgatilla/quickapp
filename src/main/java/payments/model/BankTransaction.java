@@ -15,22 +15,23 @@ public class BankTransaction {
         this.transactionDate = transactionDate;
     }
 
-    int getTransactionId() {
+    public int getTransactionId() {
         return this.transactionId;
     }
 
-    BankAccount getPayerAccount(){
+    public BankAccount getPayerAccount(){
         return this.payerAccount;
     }
-    BankAccount getPayeeAccount(){
+
+    public BankAccount getPayeeAccount(){
         return this.payeeAccount;
     }
 
-    Money getTransferAmount(){
+    public Money getTransferAmount(){
         return this.transferAmount;
     }
 
-    LocalDate getTransactionDate(){
+    public LocalDate getTransactionDate(){
         return this.transactionDate;
     }
 

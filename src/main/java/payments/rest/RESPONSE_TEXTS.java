@@ -7,4 +7,8 @@ class RESPONSE_TEXTS {
 
     static final String RESPONSE_ERROR_GET_ACCOUNTS_FOR_HOLDER = "Could not find bank accounts for account holder with id:";
     static final String RESPONSE_ERROR_NEW_ACCOUNT_FOR_HOLDER = "Account creation failed for account holder id:";
+
+    static final String RESPONSE_ERROR_CREATE_NEW_TRANSACTION_DATE_FORMAT = "<transactionDate> must have YYYYMMDD format.";
+    static final String RESPONSE_ERROR_CREATE_NEW_TRANSACTION = "Transaction setup failed.";
+
 }
