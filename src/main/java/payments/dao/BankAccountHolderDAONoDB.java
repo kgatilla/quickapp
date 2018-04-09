@@ -20,6 +20,8 @@ class BankAccountHolderDAONoDB implements BankAccountHolderDAO{
         return Helper.INSTANCE;
     }
 
+    private BankAccountHolderDAONoDB(){}
+
     //in lieu of a db
     private final HashMap<String, BankAccountHolder> clients = new HashMap<>();
     private final HashMap<Integer, BankAccountHolder> clientsByIdIndex = new HashMap<>();

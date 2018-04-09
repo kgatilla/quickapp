@@ -18,6 +18,8 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
         return BankAccountsDAONoDB.Helper.INSTANCE;
     }
 
+    private BankAccountsDAONoDB(){}
+
     //Interface implementation
 
     @Override

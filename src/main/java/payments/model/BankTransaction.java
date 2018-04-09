@@ -4,15 +4,40 @@ import org.joda.money.Money;
 
 import java.time.LocalDate;
 
-public interface BankTransaction {
+public class BankTransaction {
 
-    int getTransactionId();
+    public BankTransaction(int transactionId, BankAccount payerAccount, BankAccount payeeAccount,
+                           Money transferAmount, LocalDate transactionDate) {
+        this.transactionId = transactionId;
+        this.payerAccount = payerAccount;
+        this.payeeAccount = payeeAccount;
+        this.transferAmount = transferAmount;
+        this.transactionDate = transactionDate;
+    }
 
-    BankAccount getPayerAccount();
-    BankAccount getPayeeAccount();
+    int getTransactionId() {
+        return this.transactionId;
+    }
 
-    Money getTransferAmount();
+    BankAccount getPayerAccount(){
+        return this.payerAccount;
+    }
+    BankAccount getPayeeAccount(){
+        return this.payeeAccount;
+    }
 
-    LocalDate getSetupDate();
-    LocalDate getTransactionDate();
+    Money getTransferAmount(){
+        return this.transferAmount;
+    }
+
+    LocalDate getTransactionDate(){
+        return this.transactionDate;
+    }
+
+    private int transactionId;
+    private final BankAccount payerAccount;
+    private final BankAccount payeeAccount;
+    private final Money transferAmount;
+
+    private final LocalDate transactionDate;
 }
