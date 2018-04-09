@@ -1,10 +1,9 @@
 package payments.dao;
 
 import payments.model.BankAccountHolder;
+import payments.model.BankClient;
 
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Database free DAO for Bank Account Holders
@@ -27,11 +26,11 @@ class BankAccountHolderDAONoDB implements BankAccountHolderDAO{
     @Override
     public Optional<BankAccountHolder> setupClientAccountHolder(String payeeFirstName, String payeeLastName, String email){
 
-        BankAccountHolder newClient;
+        BankClient newClient;
 
         synchronized (clients) {
             int id = clients.size() +1;
-            newClient = new BankAccountHolder(id, payeeFirstName, payeeLastName, email);
+            newClient = new BankClient(id, payeeFirstName, payeeLastName, email);
             if (clients.containsKey (email)) {
                 //cannot add new client. someone with same id or same email might already exist.
                 newClient = null;
