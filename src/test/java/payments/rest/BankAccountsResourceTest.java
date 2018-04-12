@@ -2,7 +2,7 @@ package payments.rest;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class BankAccountsResourceTest {
 
@@ -20,7 +20,7 @@ public class BankAccountsResourceTest {
 
         res = bankAccountsResource
                 .createAccountForAccountHolder( katiaId, "GBAABBXX","GB11 1111 0000 1111 2222 33","112233","01020304", "GBP");
-        assertTrue("Ms. Katia wold account should have been created." + res, !res.contains(RESPONSE_TEXTS.RESPONSE_ERROR_NEW_ACCOUNT_FOR_HOLDER));
+        assertTrue("Ms. Katia Wolf account should have been created." + res, !res.contains(RESPONSE_TEXTS.RESPONSE_ERROR_NEW_ACCOUNT_FOR_HOLDER));
 
         res = bankAccountsResource
                 .createAccountForAccountHolder( katiaId, "GBAABBZZ","GB22 2222 0000 1111 2222 33","112233","01020304", "GBP");
