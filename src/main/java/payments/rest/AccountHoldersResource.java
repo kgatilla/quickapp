@@ -2,6 +2,7 @@ package payments.rest;
 
 
 import payments.dao.BankAccountHolderDAOProvider;
+import payments.dao.DAOType;
 import payments.model.BankAccountHolder;
 
 import javax.ws.rs.*;
@@ -18,7 +19,7 @@ public class AccountHoldersResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String getAllAccountHolders() {
         BankAccountHolderDAOProvider dao = new BankAccountHolderDAOProvider();
-        Set<Integer> ids= dao.getBankAccountHolderDAONoDB().getAllClientAccountHolderIds();
+        Set<Integer> ids= dao.getBankAccountHolderDAO(DAOType.NoDB).getAllClientAccountHolderIds();
         Set<String> idSet = ids.stream().map(String::valueOf).collect(Collectors.toSet());
         String res  = String.join(",", idSet);
         return  RESPONSE_TEXTS.RESPONSE_GET_ALL_ACCOUNT_HOLDERS + res;
@@ -30,7 +31,7 @@ public class AccountHoldersResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String getAccountHolder(@PathParam  ("id") int id) {
         BankAccountHolderDAOProvider dao = new BankAccountHolderDAOProvider();
-        Optional<BankAccountHolder> accountHolder = dao.getBankAccountHolderDAONoDB().getClientAccountHolder(id);
+        Optional<BankAccountHolder> accountHolder = dao.getBankAccountHolderDAO(DAOType.NoDB).getClientAccountHolder(id);
         return accountHolder
                 .map(BankAccountHolder::getEmail)
                 .orElse(RESPONSE_TEXTS.RESPONSE_ERROR_GET_ACCOUNTS_HOLDER + id);
@@ -45,7 +46,7 @@ public class AccountHoldersResource {
                                       @QueryParam("email") String email) {
 
         BankAccountHolderDAOProvider dao = new BankAccountHolderDAOProvider();
-        Optional<BankAccountHolder> accountHolder = dao.getBankAccountHolderDAONoDB().setupClientAccountHolder(firstName, lastName, email);
+        Optional<BankAccountHolder> accountHolder = dao.getBankAccountHolderDAO(DAOType.NoDB).setupClientAccountHolder(firstName, lastName, email);
 
         return accountHolder
                 .map(x-> Integer.toString(x.getClientId()))

@@ -1,4 +1,4 @@
-package payments.datastore;
+package payments.datastore.h2;
 
 class SQL_COMMANDS {
 

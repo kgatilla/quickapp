@@ -1,11 +1,11 @@
-package payments.datastore;
+package payments.datastore.h2;
 
 import org.h2.tools.Server;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import java.util.Optional;
 
 public class H2DBUtilities {
@@ -13,7 +13,7 @@ public class H2DBUtilities {
 JDBC driver class: org.h2.Driver
 Database URL: jdbc:h2:tcp://localhost/~/test
 */
-    //--- start the H2 DB?
+    //--- start the ORM DB?
     public Optional<Connection> createNewDbFromScratch(){
         return createNewDb()
                 .flatMap(this::startDb)
@@ -22,7 +22,7 @@ Database URL: jdbc:h2:tcp://localhost/~/test
                 .flatMap(this::createTables);
     }
 
-    //--- create new H2 in memory TCP server
+    //--- create new ORM in memory TCP server
     private String[] setupDbArgs() {
         return new String[]{"-tcpPort", "9123", "-tcpAllowOthers"};
     }
@@ -54,7 +54,7 @@ Database URL: jdbc:h2:tcp://localhost/~/test
         return Optional.ofNullable(server);
     }
 
-    //--- connect to the H2 DB
+    //--- connect to the ORM DB
     private Optional<Connection> getDBConnection() {
         final String DB_DRIVER = "org.h2.Driver";
         final String DB_CONNECTION = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
@@ -92,7 +92,7 @@ Database URL: jdbc:h2:tcp://localhost/~/test
         return Optional.ofNullable(dbConnection);
     }
 
-    //--- create H2 DB tables
+    //--- create ORM DB tables
     private Optional<Connection> dropTables(Connection connection)  {
         return executeCreateStatement(SQL_COMMANDS.SQL_DROP_ACCOUNT_HOLDER_TABLE, connection)
                 .flatMap(con->executeCreateStatement(SQL_COMMANDS.SQL_DROP_ACCOUNTS_TABLE,con))

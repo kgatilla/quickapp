@@ -10,8 +10,7 @@ import java.util.Set;
  * Database free DAO for Bank Account Holders
  */
 class BankAccountHolderDAONoDB implements BankAccountHolderDAO{
-
-    //Singleton
+     //Singleton
     private static class Helper{
         private static final BankAccountHolderDAONoDB INSTANCE = new BankAccountHolderDAONoDB();
     }

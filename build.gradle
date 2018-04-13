@@ -13,6 +13,12 @@ dependencies {
 
     compile group: 'org.joda', name: 'joda-money', version: '0.12'
 
+    //compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.6'
+    //testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+
+    //compile group: 'org.hibernate', name: 'hibernate-gradle-plugin', version: '5.2.16.Final'
+    //compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.16.Final'
+
     compile group: 'com.h2database', name: 'h2', version: '1.4.197'
 
     compile group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '2.26'

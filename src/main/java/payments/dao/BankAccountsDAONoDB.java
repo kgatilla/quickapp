@@ -1,13 +1,13 @@
 package payments.dao;
 
+import org.joda.money.CurrencyUnit;
 import payments.model.BankAccount;
 import payments.model.BankAccountHolder;
-import org.joda.money.CurrencyUnit;
-import org.joda.money.IllegalCurrencyException;
-import payments.rest.AccountHoldersResource;
 import payments.util.MoneyBuilder;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Optional;
 
 public class BankAccountsDAONoDB implements BankAccountsDAO {
 
@@ -52,7 +52,7 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
 
     private Optional<BankAccountHolder> getAccountHolderById(int clientId) {
         return new BankAccountHolderDAOProvider()
-                .getBankAccountHolderDAONoDB()
+                .getBankAccountHolderDAO(DAOType.NoDB)
                 .getClientAccountHolder(clientId);
     }
 
