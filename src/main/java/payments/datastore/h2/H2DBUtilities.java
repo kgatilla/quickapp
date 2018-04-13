@@ -1,6 +1,8 @@
 package payments.datastore.h2;
 
 import org.h2.tools.Server;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +11,8 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class H2DBUtilities {
+
+    private static Logger log = LoggerFactory.getLogger(H2DBUtilities.class);
     /*
 JDBC driver class: org.h2.Driver
 Database URL: jdbc:h2:tcp://localhost/~/test
@@ -33,7 +37,7 @@ Database URL: jdbc:h2:tcp://localhost/~/test
         try {
             server = Server.createTcpServer(args);
         } catch (SQLException e) {
-            System.out.println("Exception Message " + e.getLocalizedMessage());
+            log.error("createNewDb exception:\n errorCode={},\n toString={},\n sqlState={}",e.getErrorCode(), e.toString(),e.getSQLState());
             e.printStackTrace();
         }
 
@@ -45,7 +49,7 @@ Database URL: jdbc:h2:tcp://localhost/~/test
             try {
                 server.start();
             } catch (SQLException e) {
-                System.out.println("Exception Message " + e.getLocalizedMessage());
+                log.error("startDB exception:\n errorCode={},\n toString={},\n sqlState={}", e.getErrorCode(), e.toString(), e.getSQLState());
                 e.printStackTrace();
                 server = null;
             }
@@ -65,26 +69,28 @@ Database URL: jdbc:h2:tcp://localhost/~/test
         try {
             Class.forName(DB_DRIVER);
         } catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+            log.error ("getDBConnection:", e.toString());
+            e.printStackTrace();
         }
 
         try {
             dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.error("getConnection sql exception:\n errorCode={},\n toString={},\n sqlState={}", e.getErrorCode(), e.toString(), e.getSQLState());
+            e.printStackTrace();
         }
 
         try {
             if (dbConnection!=null && dbConnection.getAutoCommit())
                 dbConnection.setAutoCommit(false);
         } catch (SQLException e) {
+            log.error(" setAutoCommit exception:\n errorCode={},\n toString={},\n sqlState={}", e.getErrorCode(), e.toString(), e.getSQLState());
             e.printStackTrace();
-            System.out.println("Exception Message " + e.getLocalizedMessage());
             try {
                 dbConnection.close();
             } catch (SQLException e1) {
+                log.error(" db close exception:\n errorCode={},\n toString={},\n sqlState={}", e1.getErrorCode(), e1.toString(), e1.getSQLState());
                 e1.printStackTrace();
-                System.out.println("Exception Message " + e.getLocalizedMessage());
                 dbConnection = null;
             }
         }
@@ -115,8 +121,10 @@ Database URL: jdbc:h2:tcp://localhost/~/test
             connection.commit();
             resConnection = connection;
         } catch (SQLException e) {
-            System.out.println("Exception Message " + e.getLocalizedMessage());
+            log.error(" executeCreateStatement sql exception:\n errorCode={},\n toString={},\n sqlState={}", e.getErrorCode(), e.toString(), e.getSQLState());
+            e.printStackTrace();
         } catch (Exception e) {
+            log.error("executeCreateStatement exception: {}", e.toString());
             e.printStackTrace();
         }
 

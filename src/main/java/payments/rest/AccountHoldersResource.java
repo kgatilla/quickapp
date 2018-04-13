@@ -44,9 +44,9 @@ public class AccountHoldersResource {
     public String createAccountHolder(@QueryParam("firstName") String firstName,
                                       @QueryParam("lastName") String lastName,
                                       @QueryParam("email") String email) {
-
         BankAccountHolderDAOProvider dao = new BankAccountHolderDAOProvider();
-        Optional<BankAccountHolder> accountHolder = dao.getBankAccountHolderDAO(DAOType.NoDB).setupClientAccountHolder(firstName, lastName, email);
+        Optional<BankAccountHolder> accountHolder = dao.getBankAccountHolderDAO(DAOType.NoDB)
+                .setupClientAccountHolder(firstName, lastName, email);
 
         return accountHolder
                 .map(x-> Integer.toString(x.getClientId()))
