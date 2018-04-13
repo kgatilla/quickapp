@@ -1,6 +1,8 @@
 package payments.dao;
 
 import org.joda.money.CurrencyUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import payments.model.BankAccount;
 import payments.model.BankAccountHolder;
 import payments.util.MoneyBuilder;
@@ -10,6 +12,7 @@ import java.util.HashSet;
 import java.util.Optional;
 
 public class BankAccountsDAONoDB implements BankAccountsDAO {
+    private final static Logger log = LoggerFactory.getLogger(BankAccountsDAONoDB.class);
 
     //Singleton
     private static class Helper{
@@ -26,6 +29,8 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
 
     @Override
     public Optional<BankAccount> setupNewClientBankAccount(int cliendId, String bic, String iban, String ukSortCode, String ukAccountNumber, String currencyISOCode) {
+        log.debug("setupNewClientBankAccount: clientId={}, bic={}, iban={}, ukSortCode={}, ukAccountNumber={}, currencyISOCode={}"
+                , cliendId, bic, iban, ukSortCode, ukAccountNumber, currencyISOCode);
 
         Optional<CurrencyUnit> currency = MoneyBuilder.of(currencyISOCode);
 
@@ -35,11 +40,14 @@ public class BankAccountsDAONoDB implements BankAccountsDAO {
 
     @Override
     public Optional<HashSet<BankAccount>> fetchClientBankAccounts(int clientId) {
+        log.debug("fetchClientBankAccounts:{}", clientId);
+
         return Optional.ofNullable(accountsByClientID.get(clientId));
     }
 
     @Override
     public Optional<BankAccount> fetchBankAccountForAccountId(int accountId) {
+        log.debug("fetchBankAccountForAccountId:{}", accountId);
 
         return Optional.ofNullable(accountsByAccountId.get(accountId));
     }

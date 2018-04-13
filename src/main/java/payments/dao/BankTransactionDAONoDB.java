@@ -1,11 +1,14 @@
 package payments.dao;
 
 import org.joda.money.Money;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import payments.model.BankAccount;
 import payments.model.BankTransaction;
 import payments.util.MoneyBuilder;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
@@ -14,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class BankTransactionDAONoDB implements BankTransactionDAO {
 
+    private static Logger log = LoggerFactory.getLogger(BankTransactionDAONoDB.class);
     //Singleton
     private static class Helper{
         private static final BankTransactionDAONoDB INSTANCE = new BankTransactionDAONoDB();
@@ -26,10 +30,13 @@ public class BankTransactionDAONoDB implements BankTransactionDAO {
     private BankTransactionDAONoDB() {}
 
     @Override
-    public Optional<BankTransaction> setupNewTransaction(int payerAccountId, int payeeAcountId, double transferAmount,
+    public Optional<BankTransaction> setupNewTransaction(int payerAccountId, int payeeAccountId, double transferAmount,
                                                          String currencyISOCode, LocalDate transferDate) {
+        log.debug("setupNewTransaction: payerAccountId={}, payeeAccountId={}, transferAmount={}, currencyISOCode={}, transferDate={}"
+                ,payerAccountId, payeeAccountId, transferAmount, currencyISOCode, transferDate.format(DateTimeFormatter.BASIC_ISO_DATE));
+
         return fetchAccountForId(payerAccountId).flatMap(
-                payer-> fetchAccountForId(payeeAcountId).flatMap(
+                payer-> fetchAccountForId(payeeAccountId).flatMap(
                     payee -> MoneyBuilder.of(transferAmount,currencyISOCode).flatMap(
                         money-> synchronizedCreateBankTransfer(payer, payee, money, transferDate))));
 
@@ -37,11 +44,13 @@ public class BankTransactionDAONoDB implements BankTransactionDAO {
 
     @Override
     public Optional<BankTransaction> getTransactionById(int transactionId) {
+        log.debug("getTransactionById:{}",transactionId);
         return Optional.empty();
     }
 
     @Override
     public Set<BankTransaction> transactionSummary(int bankAccountId, LocalDate summaryStartDate, LocalDate summaryEndDate) {
+        log.debug("transactionSummary: bankAccountId={}, summaryStartDate={}, summaryEndDate={}", bankAccountId, summaryStartDate, summaryEndDate);
         return transactions.stream()
                 .filter( tr-> (tr.getPayeeAccount().getAccountId() == bankAccountId || tr.getPayerAccount().getAccountId() == bankAccountId) &&
                         (tr.getTransactionDate().isAfter(summaryStartDate) && tr.getTransactionDate().isBefore(summaryEndDate)))
